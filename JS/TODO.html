@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+    }
+    #todoList {
+      margin: 20px auto;
+      max-width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .task {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .task input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .delete-btn {
+      margin-left: auto;
+      cursor: pointer;
+    }
+    .clear-btn {
+      margin-top: 10px;
+      background: #ff5a5a;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .task-count {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="todoList">
+    <h1>To-Do List</h1>
+    <input type="text" id="newTaskInput" placeholder="Add a new task...">
+    <button onclick="addTask()">Add</button>
+    <div id="taskList"></div>
+    <button class="clear-btn" onclick="clearCompleted()">Clear Completed</button>
+    <div class="task-count" id="taskCount">0 tasks left</div>
+  </div>
+
+  <script>
+    const taskList = document.getElementById("taskList");
+    const newTaskInput = document.getElementById("newTaskInput");
+    const taskCountElem = document.getElementById("taskCount");
+
+    function updateTaskCount() {
+      const tasks = document.querySelectorAll(".task");
+      const completedTasks = document.querySelectorAll(".task input[type='checkbox']:checked");
+      const remainingTasks = tasks.length - completedTasks.length;
+      taskCountElem.textContent = `${remainingTasks} task${remainingTasks === 1 ? '' : 's'} left`;
+    }
+
+    function addTask() {
+      const taskText = newTaskInput.value.trim();
+      if (taskText !== "") {
+        const task = document.createElement("div");
+        task.className = "task";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.addEventListener("click", toggleTask);
+
+        const taskTextElem = document.createElement("span");
+        taskTextElem.textContent = taskText;
+
+        const deleteBtn = document.createElement("span");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.textContent = "X";
+        deleteBtn.addEventListener("click", removeTask);
+
+        task.appendChild(checkbox);
+        task.appendChild(taskTextElem);
+        task.appendChild(deleteBtn);
+
+        taskList.appendChild(task);
+
+        updateTaskCount();
+        newTaskInput.value = "";
+      }
+    }
+
+    function toggleTask(event) {
+      const taskTextElem = event.target.nextElementSibling;
+      taskTextElem.style.textDecoration = event.target.checked ? "line-through" : "none";
+      updateTaskCount();
+    }
+
+    function removeTask(event) {
+      const task = event.target.parentNode;
+      taskList.removeChild(task);
+      updateTaskCount();
+    }
+
+    function clearCompleted() {
+      const completedTasks = document.querySelectorAll(".task input[type='checkbox']:checked");
+      completedTasks.forEach((task) => {
+        const taskElem = task.parentNode;
+        taskList.removeChild(taskElem);
+      });
+      updateTaskCount();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Button</title>
+  <style>
+    body {
+      font-family:Comic Sans MS,cursive;
+      text-align: center;
+      margin:50px;
+      background-color:#ffc7b0; 
+    }
+    #textToChange {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    #colorButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color:#6f54c1;
+      color: white;
+      border-style: double;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <p id="textToChange">WELCOME GUYS!!</p>
+  <button id="colorButton">Change Color</button>
+  <script>
+    const colorButton = document.getElementById('colorButton');
+    const textToChange = document.getElementById('textToChange');
+    function changeTextColor() {
+      const randomColor = getRandomColor();
+      textToChange.style.color = randomColor;
+    }
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+    colorButton.addEventListener('click', changeTextColor);
+  </script>
+</body>
+</html>
